@@ -1,0 +1,596 @@
+
+/* FormCheck — Modern Fitness Design */
+
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #f4f8fc;
+  background: #07172b;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --navy: #0b1f3a;
+  --navy-light: #132d4b;
+  --card: #142b46;
+  --green: #39ff88;
+  --text-muted: #a8bbd0;
+  --border: rgba(255, 255, 255, 0.09);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top, #173454 0%, #07172b 60%);
+}
+
+button {
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+/* Main app layout */
+
+.home-screen {
+  width: 100%;
+  max-width: 460px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 42px 22px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+  background: var(--navy);
+  color: #f4f8fc;
+}
+
+.home-screen h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 7vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+}
+
+.home-screen > p {
+  margin: -8px 0 8px;
+  color: var(--text-muted);
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+
+/* Progress and workout statistics */
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin: 12px 0;
+}
+
+.stat-card {
+  min-width: 0;
+  padding: 19px 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #183654, #112843);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.stat-card p,
+.workout-stat p {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+.stat-card span {
+  color: var(--green);
+  font-size: 1.8rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+/* Buttons */
+
+.start-button,
+.back-button {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 18px;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  font-size: 0.98rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.start-button {
+  color: #062319;
+  background: var(--green);
+  box-shadow: 0 6px 18px rgba(57, 255, 136, 0.12);
+}
+
+.start-button:hover {
+  background: #6bffa6;
+  transform: translateY(-1px);
+}
+
+.back-button {
+  color: #e1ebf5;
+  background: #132b46;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.back-button:hover {
+  background: #1b3857;
+}
+
+.start-button:active,
+.back-button:active {
+  transform: scale(0.98);
+}
+
+button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* Instructions and general content cards */
+
+.instruction-card {
+  width: 100%;
+  padding: 21px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.instruction-card h2 {
+  margin: 0 0 15px;
+  color: var(--green);
+  font-size: 1.12rem;
+  font-weight: 750;
+}
+
+.instruction-card p {
+  margin: 0 0 13px;
+  color: #d3deea;
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.instruction-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Camera and pose detection */
+
+.camera-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.camera-placeholder {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid rgba(57, 255, 136, 0.28);
+  border-radius: 22px;
+  background: #061321;
+  isolation: isolate;
+}
+
+.camera-video,
+.pose-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-video {
+  z-index: 1;
+}
+
+.pose-canvas {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.camera-placeholder > span {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 16px;
+  right: 16px;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  transform: translateY(-50%);
+}
+
+.workout-stats {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr);
+  gap: 12px;
+}
+
+.workout-stat {
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: var(--card);
+}
+
+.workout-stat span {
+  display: block;
+  color: var(--green);
+  font-size: 1rem;
+  font-weight: 750;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.form-feedback {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Squat angle readings */
+
+.angle-readings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin: 2px 0;
+}
+
+.angle-readings p {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #132b46;
+  color: #d8e5f2;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+/* Responsive spacing */
+
+@media (min-width: 600px) {
+  .home-screen {
+    min-height: auto;
+    margin: 24px auto;
+    padding: 34px 28px;
+    border: 1px solid var(--border);
+    border-radius: 26px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+  }
+}
+
+@media (max-width: 360px) {
+  .home-screen {
+    padding: 30px 16px 24px;
+    gap: 15px;
+  }
+
+  .stat-card {
+    padding: 15px 12px;
+  }
+
+  .workout-stat {
+    padding: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+
+/* Bottom navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
+  width: 100%;
+  max-width: 460px;
+  min-height: 76px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+
+  background: rgba(7, 23, 43, 0.97);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+}
+
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  min-width: 0;
+  padding: 6px 3px;
+  border: none;
+  border-radius: 12px;
+
+  color: #a8bbd0;
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.nav-button span {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.nav-button.active {
+  color: #39ff88;
+  background: rgba(57, 255, 136, 0.09);
+}
+
+/* Keep screen content visible above the fixed navigation */
+.home-screen {
+  padding-bottom: 110px;
+}
+
+.speed-warning {
+  margin: 0;
+  color: #ff4d5d;
+  font-weight: 750;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+
+
+
+
+/* Camera workout layout */
+.camera-workout {
+  position: relative;
+  width: 100%;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.camera-workout .camera-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.camera-workout .camera-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #061321;
+}
+
+.camera-workout .camera-video,
+.camera-workout .pose-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-workout .camera-video {
+  z-index: 1;
+}
+
+.camera-workout .pose-canvas {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.camera-workout .camera-top-label {
+  position: absolute;
+  z-index: 3;
+  top: 12px;
+  left: 12px;
+}
+
+.camera-workout .workout-panel {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 85%;
+  overflow-y: auto;
+  border-radius: 22px 22px 0 0;
+  transition: max-height 0.3s ease;
+}
+
+.camera-workout .workout-panel.expanded {
+  max-height: 85%;
+}
+
+.camera-workout .panel-toggle {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+.camera-workout .panel-details {
+  padding-bottom: 16px;
+}
+
+.camera-workout .panel-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 16px;
+}
+
+.camera-workout .panel-stat,
+.camera-workout .workout-stat {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Center and constrain the camera screen */
+main.home-screen:has(.camera-workout) {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: 16px;
+  gap: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+main.home-screen:has(.camera-workout) .camera-workout {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+main.home-screen:has(.camera-workout) .bottom-nav {
+  display: none;
+}
+
+
+
+/* Workout panel styling */
+.camera-workout .workout-panel {
+  background: #0b1f3a;
+  color: #f4f8fc;
+  font-family: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: none;
+}
+
+/* Use the app's font throughout the panel */
+.camera-workout .workout-panel,
+.camera-workout .workout-panel * {
+  font-family: inherit;
+}
+
+/* Make the camera's workout label green */
+.camera-workout .camera-top-label {
+  color: #39ff88;
+  font-family: inherit;
+  font-weight: 750;
+}
+
+
+/* Consistent typography throughout FormCheck */
+html,
+body,
+#root,
+#root * {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+/* Keep buttons and form controls consistent */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Consistent text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+p,
+span,
+label {
+  font-family: inherit;
+}
+
+
+/* Match the camera status text to the app typography */
+.camera-workout .camera-top-label,
+.camera-workout .camera-top-label *,
+.camera-workout .pose-status,
+.camera-workout .pose-status * {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-style: normal;
+  letter-spacing: normal;
+}
