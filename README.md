@@ -1,16 +1,79 @@
-# React + Vite
+# FormCheck
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FormCheck is a camera-based exercise form checker built with React and MediaPipe. The goal of the project is to help users monitor their exercise form using computer vision.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Try FormCheck here: https://formcheck-kappa.vercel.app/
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Camera-based exercise form checking
+- Computer vision powered by MediaPipe
+- Built with React
+- Runs as a web application
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React 19
+- JavaScript
+- Vite
+- MediaPipe Tasks Vision
+
+## Getting Started
+
+### Prerequisites
+
+You will need:
+- Node.js
+- npm
+- A modern web browser
+- A camera for camera-based functionality
+
+### Installation
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://github.com/check1123/FormCheck.git
+   ```
+
+2. Enter the project folder:
+
+   ```bash
+   cd FormCheck
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open the local URL displayed in your terminal.
+
+## Building for Production
+
+To create a production build, run:
+
+```bash
+npm run build
+```
+
+## Project Purpose
+
+FormCheck was created to explore how computer vision can be used to help people understand and improve their exercise form.
+
+## Author
+
+Created by check1123.
+
+## License
+
+A license has not yet been selected for this project.
